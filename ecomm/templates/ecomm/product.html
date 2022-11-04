@@ -1,0 +1,143 @@
+{% extends 'ecomm/base.html' %}
+{% load static %}
+{% load i18n %}
+
+{% block title %}
+    <title>{{ product.name }}</title>
+{% endblock %}
+
+{% block content %}
+    {% load breadcrumbs %}
+    {% get_breadcrumbs_product product %}
+
+<div class="container-lg">
+    <div class="row">
+        <div class="col">
+            <a href="{{ product.image.url }}" data-fslightbox="images">
+            <img
+              class="img-fluid"
+              src="{{product.image_in_product.url}}"
+            />
+            </a>
+            {% if product.images.all %}
+            <div class="images">
+                {% for prod_image in product.images.all %}
+                    <a href="{{ prod_image.product_image.url }}" data-fslightbox="images">
+                    <img
+                        class="img-fluid"
+                        src="{{ prod_image.product_image_thumbnail.url }}"
+                        alt="{{ prod_image.title }}"
+                    />
+                    </a>
+                {% endfor %}
+            </div>
+            {% endif %}
+        </div>
+
+        <div class="col">
+            <div class="info">
+                <div class="mb-4">
+                  <h1 class="title">{{ product.name }}</h1>
+                </div>
+                <div class="mt-2">
+                  <h5 class="text">Цена: {{ product.price }}</h5>
+                  <p class="text">
+                    <form action="{% url 'cart:cart_add' product.id %}" method="post">
+                      {{ cart_product_form }}
+                      {% csrf_token %}
+                      <input class="btn btn-success" type="submit" value="Add to cart">
+                    </form>
+                  </p>
+                </div>
+                <div class="text mt-4">
+                  <h2 class="text">Описание</h2>
+                  <p>{{ product.description }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col">
+        <hr/>
+        <h3 class="text">Характеристики товара:</h3>
+            {% for spec in product.productspecificationvalue_set.all %}
+                <p>{{ spec.specification }} - {{ spec.value }}</p>
+            {% endfor %}
+        </div>
+    </div>
+
+    <div class="row pt-4 bg-light">
+        <h3>Похожие товары:</h3>
+        {% for sm in similar_product %}
+            {% if sm.name != product.name %}
+            <div class="col-3">
+                <div class="card">
+                    <img class="card-img-top w-50 py-3 mx-auto"
+                         src="{% if sm.image %}{{ sm.image_in_main.url }}{% endif %}"
+                         alt="{{ sm.name }}">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            <a href="{{ sm.get_absolute_url }}"
+                               class="link-dark stretched-link">
+                                {{ sm.get_short_name }}
+                            </a>
+                        </h5>
+                        <p class="card-text"><b>Цена</b>: {{ sm.price }}₴</p>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <div class="row pt-4">
+         <div class="col-12 col-lg-6">
+            <h3 class="text">Добавить комментарий о товаре</h3>
+            <form action="." method="post" class="order-form">
+                {{ comment_form.as_p }}
+                <p><input class="btn btn-primary" type="submit" value="Оставить комментарий"></p>
+                {% csrf_token %}
+            </form>
+         </div>
+    </div>
+
+    <div class="row pt-4 bg-light">
+         <div class="col-12 col-lg-6">
+            <h3 class="text">Комментарии о товаре</h3>
+            <div class="row">
+            {% if product.comments %}
+                {% for comment in product.comments.all %}
+                    <div class="media-block col-lg-3 pt-2">
+                      <a class="media-left" href="#">
+                          <img style="height: 120px"
+                               class="img-circle img-thumbnail"
+                               alt="Профиль пользователя"
+                               src="https://bootstraptema.ru/snippets/icons/2016/mia/2.png"
+                          >
+                      </a>
+                    </div>
+                      <div class="media-body col-lg-9 pt-2">
+                        <div class="mar-btm">
+                            <a href="#" class="btn-link text-semibold media-heading box-inline">
+                             {{ comment.name }}
+                            </a>
+                            <p class="text-muted text-sm">
+                                <i class="fa fa-mobile fa-lg"></i>{{ comment.created_at }}
+                            </p>
+                        </div>
+                        <p>{{ comment.message }}</p>
+                      </div>
+                {% endfor %}
+            {% endif %}
+            </div>
+         </div>
+    </div>
+</div>
+
+<script src="{% static 'ecomm/js/fslightbox.js' %}"></script>
+{% endblock %}
+
+
+
+

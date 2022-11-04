@@ -1,0 +1,83 @@
+{% extends 'ecomm/base.html' %}
+{% load i18n %}
+{load account %}
+{% load static %}
+{% block title %}
+    <title>{{ title }}</title>
+{% endblock %}
+{% block content %}
+<div class="container-lg">
+    {% if user.is_authenticated %}
+    <a href="{% url 'users:profile_update' %}" class="btn btn-primary"  role="button" >Update Profile</a>
+        | <a href="{% url 'account_email' %}"class="btn btn-primary"  role="button" >Manage Email</a>
+        | <a href="{% url 'account_change_password' %}"class="btn btn-primary"  role="button" >Change Password</a>
+        |
+    <a href="{% url 'account_logout' %}"class="btn btn-primary"  role="button" >Logout</a>
+    {% endif %}
+    <h3>Welcome, {{ user.username }}.</h3>
+        <div class="row">
+            <div class="col">
+                {% if user.profile.photo %}
+                <a href="{{ user.profile.photo.url }}" data-fslightbox="images">
+                <img
+                  class="img-fluid"
+                  src="{{user.profile.image_in_profile.url}} "
+                />
+                </a>
+                {% else %}
+                   <a href='#' data-fslightbox="images">
+                   <img class="img-fluid" src={% static 'ecomm/images/no_foto.png' %} alt="user.profile.image"/></a>
+                {% endif %}
+            </div>
+            <div class="col">
+                <div class="info">
+                    <div class="mb-4">
+                      <h1 class="title">My Profile</h1>
+                    </div>
+                    <div class="mt-2">
+                      <h5 class="text">First Name: {{ user.first_name }}</h5>
+                       <h5 class="text">Last Name: {{ user.last_name }}</h5>
+                    </div>
+                    <div class="text mt-4">
+                      <h2 class="text">Information</h2>
+                      <li>Country: {{ user.profile.country }} </li>
+                      <li>City: {{ user.profile.city }} </li>
+                      <li>Telephone: {{ user.profile.telephone }} </li>
+                      <li>Sex: {{ user.profile.sex }} </li>
+                      <li>birthday: {{ user.profile.birthday }} </li>
+                        <p> {{ myorders }} {{ orderitems }}</p>
+                    </div>
+                </div>
+            </div>
+
+       <div class="mt-5">
+          <br/>
+          <h3>{% trans 'Your orders' %}</h3>
+       </div>
+      <table class="table table-bordered" id="orders_table" style="text-align: center" >
+        <thead class="table-success">
+          <tr>
+            <th>{% trans "ID" %}</th>
+            <th>{% trans "First Name" %}</th>
+            <th>{% trans "Last Name" %}</th>
+            <th>{% trans "Phone" %}</th>
+            <th>{% trans "City" %}</th>
+            <th>{% trans "Post office" %}</th>
+            <th>{% trans "Status" %}</th>
+          </tr>
+        </thead>
+        {% for order in order_list %}
+            <tr>
+                <td>{{ order.id }}</td>
+                <td>{{ order.first_name }}</td>
+                <td>{{ order.last_name }}</td>
+                <td>{{ order.phone_number }}</td>
+                <td>{{ order.delivery_city }}</td>
+                <td>{{ order.post_office_number }}</td>
+                <td>{{ order.paid }}</td>
+            </tr>
+        {% endfor %}
+      </table>
+      </div>
+</div>
+{% endblock %}

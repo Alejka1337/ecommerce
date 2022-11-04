@@ -1,0 +1,56 @@
+{% extends "account/base.html" %}
+{% load i18n %}
+{% load account socialaccount %}
+
+{% block head_title %}{% trans "Login" %}{% endblock %}
+
+{% block content %}
+<div class="container-lg">
+    <h1 style="margin-left: 23px">{% trans "Login" %}</h1>
+
+    {% get_providers as socialaccount_providers %}
+
+    {% if socialaccount_providers %}
+    <div class="alert alert-primary" role="alert">
+        <p>{% blocktrans with site.name as site_name %}Please sign in with one
+        of your existing third party accounts. Or, <a href="{{ signup_url }}">sign up</a>
+        for a {{ site_name }} account and sign in below:{% endblocktrans %}</p>
+    </div>
+    <div class="socialaccount_ballot">
+      <ul class="socialaccount_providers">
+        {% include "socialaccount/snippets/provider_list.html" with process="login" %}
+      </ul>
+        <div class="login-or">{% trans 'or' %}
+        </div>
+    </div>
+    {% include "socialaccount/snippets/login_extra.html" %}
+    {% else %}
+    <p style="margin-left: 23px">{% blocktrans %}If you have not created an account yet,
+      then please <a href="{{ signup_url }}">register</a> first.{% endblocktrans %}</p>
+    {% endif %}
+        <form class="login" method="POST" action="{% url 'account_login' %}"
+              style="margin-left: 23px">
+          {% csrf_token %}
+          <div class="form-error">{{ form.non_field_errors }}</div>
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">{{ form.login.label_tag }}</label>
+                <div class="col-auto">
+                    {{ form.login }}
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">{{ form.password.label_tag }}</label>
+                <div class="col-auto">
+                    {{ form.password }}
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary"><strong>{% trans 'Login' %}
+            </strong></button>
+           <p></p>
+          {% if redirect_field_value %}
+          <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+          {% endif %}
+          <a class="button secondaryAction" href="{% url 'account_reset_password' %}">{% trans "Forgot Password?" %}</a>
+        </form>
+</div>
+{% endblock %}

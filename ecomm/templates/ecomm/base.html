@@ -1,0 +1,52 @@
+{% load static %}
+{% load i18n %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block title %} {% endblock title %}
+    <link type="text/css" href="{% static  'ecomm/css/style.css' %}" rel="stylesheet" />
+    <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	  <link rel="shortcut icon" href="{% static 'ecomm/images/main.ico' %}" type="image/x-icon"/>
+    {% include 'bootstrap/css/css.html' %}
+
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	{% block extra_head %} {% endblock extra_head%}
+</head>
+<body>
+
+{% include "ecomm/navbar.html" %}
+
+
+{% block content %}
+{% endblock content %}
+
+{% include "ecomm/footer.html" %}
+{% include 'bootstrap/js/js.html' %}
+
+<!--Jquery  -->
+<script  src="https://code.jquery.com/jquery-3.6.1.min.js"
+         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ="
+         crossorigin="anonymous"></script>
+<!-- DataTables JS -->
+<script src="https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.12.1/js/dataTables.bootstrap5.min.js"></script>
+<!-- DataTables script -->
+<script>
+    $("#orders_table").DataTable({
+        paging: true,
+        pageLength: 10,
+        lengthChange: true,
+        autoWidth: true,
+        searching: true,
+        bInfo: true,
+        bSort: true,
+    })
+</script>
+
+{% block extra_body %}
+{% endblock extra_body %}
+</body>
+</html>
+

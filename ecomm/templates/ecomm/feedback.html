@@ -1,0 +1,81 @@
+{% extends 'ecomm/base.html' %}
+{% load i18n %}
+
+{% block title %}<title>{{ title }}</title>{% endblock title %}
+
+{% block content %}
+    {% load breadcrumbs %}
+    {% get_breadcrumbs_other title %}
+
+<div class="container-lg pt-2">
+    <h1>{% trans "Find us" %}</h1>
+
+    <iframe width="1000" height="450"
+            style="border:0" loading="lazy"
+            allowfullscreen src="https://www.google.com/maps/embed/v1/place?q=place_id:ChIJxZ5aCIExxkARZAneoD2Z30g&key={{ myapi }}">
+    </iframe>
+
+    <h2>{% trans "Mail us" %}</h2>
+    <div>
+        <div class="col-lg-8">
+            <form action="/send_mail" method="POST" enctype="multipart/form-data" autocomplete="off">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="col-lg-6">
+                        <span>Name</span>
+                        <div class="form-group">
+                            <input type="text" class="form-control" name="name" maxlength="40" placeholder="Your Name" required>
+                        </div>
+                    </div>
+                     <div class="col-lg-6">
+                        <span>Email</span>
+                         <div class="input-group mb-3">
+                             <input type="email" class="form-control" name="email" maxlength="40" placeholder="Your email" required>
+                         </div>
+                     </div>
+                    <div class="col-12">
+                        <textarea class="form-control mt-3" rows="7" name="message" placeholder="Type your message here.."  required></textarea>
+
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">{% trans "Send email" %}</button>
+            </form>
+            <!--Message from Backend-->
+            {% if messages %}
+                {% for message in messages %}
+                    {% if message.tags == 'success_send' %}
+                        <script  src="https://code.jquery.com/jquery-3.6.1.js" integrity="sha256-3zlB5s2uwoUzrXK3BT7AX3FyvojsraNFxCc2vC/7pNI=" crossorigin="anonymous"></script>
+                        <script>
+                            $ (document).ready(function () {
+                                $("#Mymessage").modal('show');
+                                }
+                            );
+                        </script>
+                    {% endif %}
+                            <div class="modal fade" id="Mymessage" tabindex="-1" aria-labelledby="MymessageLabel" aria-hidden="true">
+                                         <div class="modal-dialog modal-dialog-centered">
+                                                <div class="modal-content">
+                                                    <div class="modal-header">
+                                                        <h5 class="modal-title" id="Mymessage"><i class="fas fa-biohazard"></i>&nbsp;&nbsp;  Perfect!!</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label={% trans "Close" %}></button>
+                                                          </div>
+                                                              <div class="modal-body text-center">
+                                                                      <div class="text-center text-success mt-3">
+                                                                        <i class="fa fa-check-circle" style="font-size:70px;color:#a5dc86;"></i>
+                                                                      </div>
+                                                                  <br>
+                                                                  <div class="mb-3">{{ message }}</div>
+                                                              </div>
+                                                          <div class="modal-footer">
+                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">{% trans "Close" %}</button>
+                                                    </div>
+                                                </div>
+                                         </div>
+        </div>
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% endblock %}

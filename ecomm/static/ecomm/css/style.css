@@ -1,0 +1,41 @@
+body {
+    margin: 0;
+    font-family: Tahoma;
+    font-size: 16px;
+    color: black;
+}
+*,
+*:before,
+*:after{
+    box-sizing: border-box;
+}
+.page{
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.nav-item {
+    padding-left: 15px;
+}
+
+tr {
+    border: 5px;
+}
+.dropdown-menu li {
+position: relative;
+}
+.dropdown-menu .dropdown-submenu {
+display: none;
+position: absolute;
+left: 100%;
+top: -7px;
+}
+.dropdown-menu .dropdown-submenu-left {
+right: 100%;
+left: auto;
+}
+.dropdown-menu > li:hover > .dropdown-submenu {
+display: block;
+}

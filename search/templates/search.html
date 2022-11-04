@@ -1,0 +1,32 @@
+{% extends 'ecomm/base.html' %}
+{% load i18n %}
+
+{% block content %}
+    <div class="row mb-3">
+    {% if query %}
+        <div class="col-12 mb-3">
+            {% trans 'Results for'%}: <b>{{ query }}</b>
+            <hr/>
+        </div>
+    {% else %}
+        <div class="col-12 col-md-8 mx-auto py-5">
+            {% include "search_form.html" %}
+        </div>
+        <div class="col-12">
+            <hr>
+        </div>
+    {% endif %}
+    </div>
+    <div class="container">
+        <div class="row">
+
+            {% for object in object_list %}
+            <div class="col py-2 align-left">
+                {% include 'search_card.html' with product=object %}
+
+        </div>
+        {% endfor %}
+
+    </div>
+</div>
+{% endblock content %}

@@ -1,0 +1,39 @@
+{% extends 'ecomm/base.html' %}
+{% load i18n %}
+
+{% block title %}
+    <title>Главная страница Интернет-Магазина</title>
+{% endblock title %}
+
+
+{% block content %}
+<div class="container-lg">
+<h1>Список товаров</h1>
+<div class="card-group">
+    {% for product in products %}
+    <div class="row py-2">
+        <div class="col-4">
+            <div class="card" style="height: 18rem; width: 12rem">
+                <img class="card-img-top w-50 py-3 mx-auto"
+                     src="{% if product.image %}
+                            {{ product.image_in_main.url }}
+                           {% endif %}"
+                     alt="{% trans "This product have no image" %}">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <a href="{{ product.get_absolute_url }}"
+                           class="link-dark stretched-link">
+                            {{ product.get_short_name }}
+                        </a>
+                    </h5>
+                    <p class="card-text"><b>Цена</b>: {{ product.price }}₴</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+</div>
+{% endblock %}
+
