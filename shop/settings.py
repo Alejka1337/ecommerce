@@ -59,7 +59,7 @@ INSTALLED_APPS = [
     'imagekit',
     'orders',
     'comments',
-    # 'ajax_select',
+    'corsheaders',
 ]
 
 MIDDLEWARE = [
@@ -71,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'debug_toolbar.middleware.DebugToolbarMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 
 ]
 
@@ -213,3 +214,7 @@ LIQPAY_PRIVATE_KEY = env('LIQPAY_PRIVATE_KEY')
 
 
 MESSAGE_TAGS = {50: 'success_send'}
+
+# Need for heroku
+CORS_ORIGIN_WHITELIST = ('https://beetroot-shop.herokuapp.com',)
+CSRF_TRUSTED_ORIGINS = ["https://beetroot-shop.herokuapp.com"]
